@@ -158,6 +158,22 @@
   /* выбранная карточка всегда в полную яркость, даже если объявление августовское */
   .row.is-fav.stale{opacity:1}
 
+  /* Свитч на карточке: смысл задаёт Диана, страница только помнит положение */
+  .sw{
+    appearance:none;cursor:pointer;position:relative;flex:none;
+    width:38px;height:22px;border-radius:11px;padding:0;
+    border:1px solid var(--line-strong);background:var(--surface-2);
+    transition:background-color .15s ease,border-color .15s ease;
+  }
+  .sw .knob{
+    position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;
+    background:var(--muted);transition:transform .15s ease,background-color .15s ease;
+  }
+  .sw[aria-checked="true"]{background:var(--accent-soft);border-color:var(--accent)}
+  .sw[aria-checked="true"] .knob{transform:translateX(16px);background:var(--accent)}
+  .sw:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  @media (prefers-reduced-motion: reduce){ .sw,.sw .knob{transition:none} }
+
   .rm{
     appearance:none;font:inherit;font-size:12.5px;cursor:pointer;
     border:1px solid var(--line-strong);background:transparent;color:var(--muted);
@@ -2841,11 +2857,15 @@ const favorites = new Map();
 // Просмотренные: карточка считается открытой после клика по объявлению или фото.
 const viewed = new Map();
 let viewedStore = null;
+// Свитч на карточке: хранится положение по номеру объявления.
+const switches = new Map();
+let switchStore = null;
 let store = null;          // коллекция отклонённых, когда база доступна
 let favStore = null;       // коллекция избранного
 const LOCAL_KEY = "villa_rejected_v1";
 const LOCAL_FAV = "villa_favorites_v1";
 const LOCAL_VIEWED = "villa_viewed_v1";
+const LOCAL_SWITCH = "villa_switch_v1";
 
 function readLocal(key){
   try{ return JSON.parse(localStorage.getItem(key) || "{}"); }catch(e){ return {}; }
@@ -2857,6 +2877,9 @@ function writeLocal(){
     favorites.forEach((val,k)=> f[k] = val);
     viewed.forEach((val,k)=> w[k] = val);
     localStorage.setItem(LOCAL_VIEWED, JSON.stringify(w));
+    const sw = {};
+    switches.forEach((val,k)=> sw[k] = val);
+    localStorage.setItem(LOCAL_SWITCH, JSON.stringify(sw));
     localStorage.setItem(LOCAL_KEY, JSON.stringify(r));
     localStorage.setItem(LOCAL_FAV, JSON.stringify(f));
   }catch(e){}
@@ -2945,6 +2968,7 @@ function render(){
         <a href="${v.u}" data-view="${mid}" target="_blank" rel="noopener">Объявление</a>
         <button type="button" class="fav" data-id="${mid}" aria-pressed="${isFav}"
           title="${isFav ? "Убрать из избранного" : "В избранное"}"><span class="star">${isFav ? "★" : "☆"}</span>${isFav ? "В избранном" : "В избранное"}</button>
+        <button type="button" class="sw" role="switch" data-id="${mid}" aria-checked="${switches.has(mid)}" aria-label="Переключатель карточки"><span class="knob"></span></button>
         <button type="button" class="rm" data-id="${mid}">Убрать</button>
       </div>
       </div>
@@ -3029,11 +3053,23 @@ async function markViewed(ids){
   }
 }
 
+async function toggleSwitch(id){
+  const on = !switches.has(id);
+  if(on) switches.set(id, {at: new Date().toISOString()}); else switches.delete(id);
+  render(); writeLocal();
+  if(switchStore){
+    try{ on ? await switchStore.doc(id).set(switches.get(id)) : await switchStore.doc(id).delete(); }
+    catch(e){ setSync("off", "Свитч не сохранился: " + (e.code || "ошибка")); }
+  }
+}
+
 document.getElementById("markAll").addEventListener("click", ()=>{
   markViewed(DATA.filter(v => !rejected.has(midOf(v))).map(midOf));
 });
 
 document.getElementById("list").addEventListener("click", e=>{
+  const swBtn = e.target.closest(".sw");
+  if(swBtn){ toggleSwitch(swBtn.dataset.id); return; }
   const link = e.target.closest("a[data-view]");
   // ссылка открывается как обычно, перерисовку откладываем, чтобы не сбить переход
   if(link){ const id = link.dataset.view; setTimeout(()=> markViewed([id]), 0); return; }
@@ -3063,6 +3099,7 @@ document.querySelectorAll(".seg").forEach(seg=>{
 Object.entries(readLocal(LOCAL_KEY)).forEach(([k,v])=> rejected.set(k,v));
 Object.entries(readLocal(LOCAL_FAV)).forEach(([k,v])=> favorites.set(k,v));
 Object.entries(readLocal(LOCAL_VIEWED)).forEach(([k,v])=> viewed.set(k,v));
+Object.entries(readLocal(LOCAL_SWITCH)).forEach(([k,v])=> switches.set(k,v));
 render();
 renderBin();
 
@@ -3074,6 +3111,16 @@ renderBin();
   }
   store = db.collection("rejected");
   favStore = db.collection("favorites");
+  switchStore = db.collection("switches");
+  switchStore.onSnapshot(
+    snap=>{
+      switches.clear();
+      snap.docs.forEach(d=> switches.set(d.id, d.data() || {}));
+      writeLocal();
+      render();
+    },
+    err=> setSync("off", "Свитчи не синхронизируются: " + err.code)
+  );
   viewedStore = db.collection("viewed");
   viewedStore.onSnapshot(
     snap=>{
