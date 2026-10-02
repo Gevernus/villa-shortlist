@@ -87,7 +87,7 @@
     background:var(--surface);border:1px solid var(--line);border-radius:4px;
     display:flex;flex-direction:column;overflow:hidden;
   }
-  .row-main{display:grid;grid-template-columns:38px 132px 1fr 108px;gap:0;align-items:stretch}
+  .row-main{display:grid;grid-template-columns:38px 132px 1fr 156px;gap:0;align-items:stretch}
   /* Фото первыми в карточке, под ними всё остальное (02.10.2026) */
   .shots{display:flex;gap:2px;order:-1;border-bottom:1px solid var(--line);background:var(--line)}
   .shots a{display:block;flex:1 1 0;min-width:0;line-height:0}
@@ -155,7 +155,7 @@
   .fav{
     appearance:none;font:inherit;font-size:12.5px;cursor:pointer;
     border:1px solid var(--line-strong);background:transparent;color:var(--muted);
-    border-radius:3px;padding:4px 9px;display:flex;align-items:center;gap:5px;
+    border-radius:3px;padding:4px 9px;display:flex;align-items:center;gap:5px;white-space:nowrap;
   }
   .fav:hover{border-color:var(--accent);color:var(--accent)}
   .fav:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
