@@ -241,13 +241,12 @@
     .price .pp + .pp{margin-top:0}
     .price .slash{display:block;font-family:"IBM Plex Mono",monospace;font-size:23px;line-height:1;color:var(--line-strong);padding-bottom:16px}
     .price .second{margin-top:0;flex-basis:100%}
-    /* Телефон: сверху дата и ссылка, снизу в один ряд избранное, свитч и «Убрать» */
-    .side{border-left:0;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:12px;width:100%}
-    .side .date{grid-row:1;grid-column:1 / 3}
-    .side a{grid-row:1;grid-column:3;justify-self:end}
+    /* Телефон: сверху дата и ссылка, снизу в один ряд избранное и «Убрать». Свитч убран 02.10.2026 */
+    .side{border-left:0;border-top:1px solid var(--line);display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;width:100%}
+    .side .date{grid-row:1;grid-column:1}
+    .side a{grid-row:1;grid-column:2;justify-self:end}
     .side .fav{grid-row:2;grid-column:1;justify-content:center}
-    .side .sw{grid-row:2;grid-column:2}
-    .side .rm{grid-row:2;grid-column:3}
+    .side .rm{grid-row:2;grid-column:2}
     .fav,.rm{padding:9px 12px}
   }
   @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -590,10 +589,9 @@ function render(){
       </div>
       <div class="side">
         <div class="date">${v.d}</div>
-        <a href="${v.u}" data-view="${mid}" target="_blank" rel="noopener">Объявление</a>
+        <a href="${v.u}" data-view="${mid}" target="_blank" rel="noopener">Посмотреть</a>
         <button type="button" class="fav" data-id="${mid}" aria-pressed="${isFav}"
           title="${isFav ? "Убрать из избранного" : "В избранное"}"><span class="star">${isFav ? "★" : "☆"}</span>${isFav ? "В избранном" : "В избранное"}</button>
-        <button type="button" class="sw" role="switch" data-id="${mid}" aria-checked="${switches.has(mid)}" aria-label="Переключатель карточки"><span class="knob"></span></button>
         <button type="button" class="rm" data-id="${mid}">Убрать</button>
       </div>
       </div>
