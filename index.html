@@ -224,88 +224,52 @@
 
 <div class="wrap">
 <header>
-  <div class="eyebrow">Живой мониторинг, обновляется каждый час · <span id="totalCount">0</span> в подборке</div>
+  <div class="eyebrow">Поиск на 16 октября · <span id="totalCount">0</span> в подборке</div>
   <h1>Мониторинг вилл: Чангу</h1>
-  <p class="lede">Виллы в Чангу с окрестностями из Telegram и Facebook. Только карточки с фото из объявления. Новые объявления добавляются автоматически каждый час.</p>
+  <p class="lede">Виллы целиком на 3 спальни в Чангу, от 5 до 15 минут до океана. Южнее дороги Мунгу, Чангу, Керобокан: за ней пробки и далеко до пляжа. Три комнаты: мы с Артёмом, Валя и Миниар.</p>
   <dl class="facts">
-    <div class="fact"><dt>Съезд</dt><dd>22 сентября</dd></div>
-    <div class="fact"><dt>Заезд</dt><dd>22.09 – 22.10</dd></div>
-    <div class="fact"><dt>Потолок за комнату</dt><dd>15 млн IDR</dd></div>
+    <div class="fact"><dt>Заезд</dt><dd>16 октября</dd></div>
+    <div class="fact"><dt>Срок</dt><dd>16.10 по 24.12</dd></div>
+    <div class="fact"><dt>Вилла целиком</dt><dd>до 40 млн IDR</dd></div>
     <div class="fact"><dt>Оплата</dt><dd>помесячно, без договора</dd></div>
   </dl>
 </header>
 
 <div class="controls">
-  <label class="ctl"><span>Спальни</span>
+  <label class="ctl"><span>Цена за виллу</span>
     <div class="seg" id="beds">
       <button type="button" data-v="all" aria-pressed="true">Все</button>
-      <button type="button" data-v="2" aria-pressed="false">2</button>
-      <button type="button" data-v="3" aria-pressed="false">3+</button>
+      <button type="button" data-v="35" aria-pressed="false">до 35</button>
+      <button type="button" data-v="40" aria-pressed="false">до 40</button>
     </div>
   </label>
   <label class="ctl"><span>Показывать</span>
     <div class="seg" id="fresh">
       <button type="button" data-v="all" aria-pressed="true">Всё</button>
-      <button type="button" data-v="sep" aria-pressed="false">Только сентябрь</button>
+      <button type="button" data-v="sep" aria-pressed="false">Только октябрь</button>
       <button type="button" data-v="fav" aria-pressed="false">★ Избранное</button>
       <button type="button" data-v="new" aria-pressed="false">Не просмотрено</button>
     </div>
   </label>
   <button type="button" class="mark-all" id="markAll">Отметить всё просмотренным</button>
-  <div class="count" id="count">40 вариантов, в избранном 8</div>
+  <div class="count" id="count">0 вариантов</div>
 </div>
 
-<p class="model-note">Цена виллы поделена на число спален поровну: потолок 15 млн на человека одинаков для вас и для соседей. Значит вилла целиком проходит до 45 млн за три спальни и до 60 за четыре.</p>
-<div class="sync on" id="sync"><span class="dot"></span><span id="syncText">в избранном 8, убрано 9. сохранено локально</span></div>
+<p class="model-note">Бюджет на троих 45 млн в месяц со всеми платежами, по 15 на комнату. Смотрим виллы до 40 млн, чтобы осталось на электричество. Варианты от 40 до 45 помечены «торг»: их берём, только если продавец скинет.</p>
+<div class="sync on" id="sync"><span class="dot"></span><span id="syncText"></span></div>
 
 <ol class="list" id="list"></ol>
 
 <section class="bin" id="bin">
   <h2>Отклонённые</h2>
-  <p>Убранные варианты. Claude их видит и в подборку больше не вернёт.</p>
-  <ul id="binList"><li>
-      <span class="name">4 комнаты, Берава, всё включено</span>
-      <span class="when">07.09, 16:46</span>
-      <button type="button" class="restore" data-id="825800">Вернуть</button>
-    </li><li>
-      <span class="name">2BR, Керобокан, от собственника (FB)</span>
-      <span class="when">07.09, 15:46</span>
-      <button type="button" class="restore" data-id="1436749294805165">Вернуть</button>
-    </li><li>
-      <span class="name">3BR, Сесех, от собственника (FB)</span>
-      <span class="when">07.09, 15:26</span>
-      <button type="button" class="restore" data-id="4098031297142512">Вернуть</button>
-    </li><li>
-      <span class="name">3BR, Умалас, срок под вопросом (FB)</span>
-      <span class="when">07.09, 15:26</span>
-      <button type="button" class="restore" data-id="1043922404890971">Вернуть</button>
-    </li><li>
-      <span class="name">2 спальни, центр Чангу, руфтоп</span>
-      <span class="when">07.09, 15:10</span>
-      <button type="button" class="restore" data-id="830340">Вернуть</button>
-    </li><li>
-      <span class="name">3BR, Берава, рядом серф-споты</span>
-      <span class="when">07.09, 15:09</span>
-      <button type="button" class="restore" data-id="829832">Вернуть</button>
-    </li><li>
-      <span class="name">3BR, Умалас, новый ремонт</span>
-      <span class="when">07.09, 15:03</span>
-      <button type="button" class="restore" data-id="828484">Вернуть</button>
-    </li><li>
-      <span class="name">2BR, Buduk</span>
-      <span class="when">07.09, 15:01</span>
-      <button type="button" class="restore" data-id="830597">Вернуть</button>
-    </li><li>
-      <span class="name">2BR, Падонан, свои ванные</span>
-      <span class="when">07.09, 14:53</span>
-      <button type="button" class="restore" data-id="571086">Вернуть</button>
-    </li></ul>
+  <p>Убранные варианты. Хранятся в этом браузере, кнопка «Вернуть» возвращает карточку в подборку.</p>
+  <ul id="binList"></ul>
 </section>
 
 <footer>
-  <div><b>Как считается.</b> «Поровну» делит цену виллы на число спален. «Мы берём мастер» фиксирует вашу с Артёмом долю на 15 млн и делит остаток между остальными комнатами: это показывает, сколько придётся просить с бернеров.</div>
-  <div><b>Потолок 15 млн за комнату</b> для всех, включая соседей. Значит вилла целиком проходит до 45 млн за три спальни и до 60 за четыре. Метка «дёшево» стоит там, где с человека выходит 11 млн и меньше: для сравнения, готовая комната в чужой вилле в Чангу стоит 7–18 млн.</div>
-  <div><b>Цены без электричества,</b> если в объявлении не сказано иное. Депозиты и залоги указаны в карточках. Августовские посты помечены и могли уже уйти.</div>
+  <div><b>Как считается.</b> Крупная цифра это цена виллы, делённая на 3 комнаты. Комнаты редко равноценные: обычно мастер дороже, одна из комнат дешевле, делим по договорённости.</div>
+  <div><b>Метки.</b> «Дёшево» до 35 млн за виллу. «Торг» от 40 до 45 млн: в бюджет влезает, только если продавец скинет. На Фейсбуке те же виллы часто дешевле, чем у агентов, а скидку 2 до 3 млн обычно дают, если попросить.</div>
+  <div><b>Цены без электричества,</b> если в объявлении не сказано иное. Депозит обычно около 3 млн. Наш плюс для продавца: срок от 2,5 месяцев.</div>
 </footer>
 </div>
 
@@ -329,10 +293,10 @@ const switches = new Map();
 let switchStore = null;
 let store = null;          // коллекция отклонённых, когда база доступна
 let favStore = null;       // коллекция избранного
-const LOCAL_KEY = "villa_rejected_v1";
-const LOCAL_FAV = "villa_favorites_v1";
-const LOCAL_VIEWED = "villa_viewed_v1";
-const LOCAL_SWITCH = "villa_switch_v1";
+const LOCAL_KEY = "villa_rejected_v2";
+const LOCAL_FAV = "villa_favorites_v2";
+const LOCAL_VIEWED = "villa_viewed_v2";
+const LOCAL_SWITCH = "villa_switch_v2";
 
 function readLocal(key){
   try{ return JSON.parse(localStorage.getItem(key) || "{}"); }catch(e){ return {}; }
@@ -370,9 +334,8 @@ function render(){
   const list = document.getElementById("list");
   let rows = DATA.filter(v=>{
     if(rejected.has(midOf(v))) return false;
-    if(state.beds === "2" && v.b !== 2) return false;
-    if(state.beds === "3" && v.b < 3) return false;
-    if(state.fresh === "sep" && !v.fresh) return false;
+    if(state.beds !== "all" && (v.p == null || v.p > Number(state.beds))) return false;
+    if(state.fresh === "sep" && !/\.10$/.test(v.d || "")) return false;
     if(state.fresh === "fav" && !favorites.has(midOf(v))) return false;
     if(state.fresh === "new" && viewed.has(midOf(v))) return false;
     return true;
@@ -396,16 +359,18 @@ function render(){
 
   list.innerHTML = rows.map((v,i)=>{
     const main = share(v);
-    const mainLabel = "с человека / мес";
+    const mainLabel = "с комнаты / мес";
     const second = v.p == null
       ? `${v.b} ${v.b<5?"спальни":"спален"}`
       : `${v.p} млн за виллу · ${v.b} ${v.b===1?"спальня":v.b<5?"спальни":"спален"}`;
-    const reach = main != null && main <= 11;
+    const reach = v.p != null && v.p <= 35;
+    const haggle = v.p != null && v.p > 40 && v.p <= 45;
     const tagHtml = [
       viewed.has(midOf(v)) ? "" : '<span class="tag unseen">не просмотрено</span>',
       ...(v.tags||[]).map(t=>`<span class="tag ${v.t}">${t}</span>`),
       reach ? '<span class="tag reach">дёшево</span>' : "",
-      v.fresh === false ? '<span class="tag">август</span>' : ""
+      haggle ? '<span class="tag">торг</span>' : "",
+      v.fresh === false ? '<span class="tag">старое</span>' : ""
     ].join("");
 
     const mid = midOf(v);
@@ -616,7 +581,7 @@ renderBin();
       if(favorites.size) parts.push("в избранном " + favorites.size);
       if(rejected.size) parts.push("убрано " + rejected.size);
       setSync("on", parts.length
-        ? parts.join(", ") + ". Claude это видит"
+        ? parts.join(", ") + ". сохранено локально"
         : "Решения сохраняются, Claude их видит");
     },
     err=> setSync("off", "Синхронизация оборвалась: " + err.code)
