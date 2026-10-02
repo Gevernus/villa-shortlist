@@ -8,7 +8,7 @@
 <title>Мониторинг вилл: Чангу</title>
 <link rel="preconnect" href="https://fonts.googleapis.com/">
 <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700&display=swap">
 <style>
   :root{
     /* Одна тема, тёмная: чёрный фон, белый текст. Светлой версии нет намеренно,
@@ -250,6 +250,77 @@
     .fav,.rm{padding:9px 12px}
   }
   @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+  /* ===== Дизайн лендинга портфолио (Design/portfolio/landing-hero.html), с 02.10.2026 основной вид =====
+     Токены с лендинга: Manrope, фон #000309, текст #f5f8ff, синий акцент, стеклянные плашки, скругления 12/20/24. */
+  :root{
+    --ground:#000309;
+    --surface:#050910;
+    --surface-2:rgb(0 77 255 / .05);
+    --ink:#f5f8ff;
+    --ink-2:#f5f8ff;
+    --muted:#7a7d84;
+    --line:rgb(245 248 255 / .08);
+    --line-strong:rgb(245 248 255 / .2);
+    --accent:#b8d7ff;
+    --accent-soft:rgb(0 77 255 / .08);
+    --focus:#5a94f5;
+  }
+  body,
+  .mono,.eyebrow,.fact dt,.ctl > span,.rank,.price .big,.price .unit,.price .second,
+  .price .slash,.tag,.side .date,.sync,.bin .when{
+    font-family:"Manrope", system-ui, sans-serif;
+    font-variant-numeric:tabular-nums;
+  }
+  body{font-weight:500}
+  h1,h2,h3{font-family:"Manrope", system-ui, sans-serif}
+  h1{font-weight:700;letter-spacing:-.04em}
+  .row h3{font-size:20px;line-height:28px;font-weight:700;letter-spacing:-.02em}
+
+  /* лейблы как Label/md лендинга: 14, SemiBold, без капса */
+  .eyebrow,.fact dt,.ctl > span,.price .unit,.sync{
+    text-transform:none;letter-spacing:-.01em;font-size:14px;font-weight:600;color:var(--muted);
+  }
+  .price .big{font-weight:700;letter-spacing:-.04em;font-size:28px;color:var(--ink)}
+  .price .second{font-weight:600;color:var(--muted)}
+  .rank{font-weight:600}
+
+  /* плашки: Surface/card, Border/subtle */
+  .facts{border-radius:20px;border-color:var(--line);background:var(--surface)}
+  .row{border-radius:24px;background:var(--surface);border-color:var(--line)}
+  .row.is-fav{border-color:var(--focus)}
+  .row.is-fav .rank{color:var(--focus)}
+  .model-note{border:1px solid var(--line);border-radius:20px;background:var(--surface-2);padding:16px 20px}
+  .empty,.bin li{border-radius:20px;border-color:var(--line)}
+
+  /* сегменты: выбранный белый, как Primary кнопка лендинга */
+  .seg{border-radius:12px;border-color:var(--line);background:rgb(245 248 255 / .04)}
+  .seg button{font-weight:600;border-color:var(--line)}
+  .seg button[aria-pressed="true"]{background:#f5f8ff;color:#000309;font-weight:700}
+
+  /* вторичные кнопки: стеклянные, без обводки, как Secondary */
+  .fav,.rm,.mark-all,.bin .restore{
+    border:0;border-radius:12px;background:rgb(245 248 255 / .04);color:var(--ink);font-weight:600;
+    transition:background-color 150ms ease;
+  }
+  .fav:hover,.rm:hover,.mark-all:hover,.bin .restore:hover{background:rgb(245 248 255 / .1);color:var(--ink)}
+  .fav[aria-pressed="true"]{background:rgb(0 77 255 / .18);color:var(--ink)}
+
+  /* «Посмотреть» главной кнопкой: белая заливка */
+  .side a{
+    background:#f5f8ff;color:#000309;border:0;border-radius:12px;padding:8px 14px;
+    font-weight:700;text-decoration:none;transition:opacity 150ms ease;
+  }
+  .side a:hover{color:#000309;opacity:.8}
+
+  /* метки как chips лендинга */
+  .tag{
+    border-radius:100px;padding:4px 12px;font-size:13px;font-weight:600;letter-spacing:-.01em;
+    text-transform:none;background:var(--surface-2);border:1px solid var(--line);color:var(--muted);
+  }
+  .tag.reach{color:var(--accent)}
+
+  :focus-visible{outline-color:var(--focus)!important}
 </style>
 
 <div class="wrap">
