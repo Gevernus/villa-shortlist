@@ -33,7 +33,9 @@
     color-scheme:dark;
   }
   *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
   body{
+    margin:0;
     background:var(--ground);
     color:var(--ink);
     font-family:"IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
@@ -41,7 +43,9 @@
     line-height:1.5;
     -webkit-font-smoothing:antialiased;
   }
-  .wrap{max-width:1080px;margin:0 auto;padding:32px 20px 72px}
+  .wrap{max-width:1080px;margin:0 auto;padding:32px 20px 72px;overflow-x:clip}
+  button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+  .body,.feat,.row h3,.bin .name{overflow-wrap:anywhere}
   h1,h2,h3{font-family:"Archivo", ui-sans-serif, system-ui, sans-serif;text-wrap:balance;margin:0}
   .mono{font-family:"IBM Plex Mono", ui-monospace, monospace;font-variant-numeric:tabular-nums}
 
@@ -212,12 +216,26 @@
   footer b{color:var(--ink-2);font-weight:600}
 
   @media (max-width:720px){
+    /* Телефон (02.10.2026): ничего не шире экрана, иначе iOS водит страницу вбок */
+    .wrap{padding:20px 16px 56px}
+    .controls{gap:14px;margin-top:20px}
+    .ctl{width:100%}
+    .seg{display:grid;grid-template-columns:repeat(3,1fr)}
+    #fresh{grid-template-columns:1fr 1fr}
+    #fresh button:nth-child(-n+2){border-bottom:1px solid var(--line)}
+    #fresh button:nth-child(2n){border-right:0}
+    .seg button{padding:10px 8px;white-space:normal}
+    .mark-all{align-self:stretch;padding:9px 10px}
+    .count{margin-left:0;align-self:flex-start;padding-bottom:0}
+    .fact{flex:1 1 45%;border-bottom:1px solid var(--line)}
     .row-main{grid-template-columns:1fr;}
     .shots img{height:104px}
     .rank{border-right:0;border-bottom:1px solid var(--line);justify-content:flex-start;padding:8px 14px 0}
     .price{border-right:0;text-align:left;padding:10px 14px 0;flex-direction:row;align-items:baseline;gap:8px;flex-wrap:wrap}
     .price .second{margin-top:0}
-    .side{border-left:0;border-top:1px solid var(--line);flex-direction:row;align-items:center;justify-content:space-between;width:100%}
+    .side{border-left:0;border-top:1px solid var(--line);flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:10px 14px;width:100%}
+    .side .date{margin-right:auto}
+    .fav,.rm{padding:7px 11px}
   }
   @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -474,13 +492,14 @@ function render(){
     rows.length + word(rows.length) + (favoriteCount ? ", в избранном " + favoriteCount : "") + (unseenCount ? ", не просмотрено " + unseenCount : "");
 
   if(!rows.length){
+    lastListHtml = "";
     list.innerHTML = state.fresh === "new"
       ? '<li class="empty">Всё просмотрено. Новые карточки появятся с меткой «не просмотрено».</li>'
       : '<li class="empty">Под эти фильтры ничего не подошло.</li>';
     return;
   }
 
-  list.innerHTML = rows.map((v,i)=>{
+  const html = rows.map((v,i)=>{
     const main = share(v);
     const mainLabel = "с комнаты / мес";
     const second = v.p == null
@@ -497,9 +516,7 @@ function render(){
     ].join("");
 
     const mid = midOf(v);
-    const shots = (v.photos?.length ? v.photos : PHOTOS[mid] || []).map((src,k)=>
-      `<a href="${v.u}" data-view="${mid}" target="_blank" rel="noopener" aria-label="Фото ${k+1} из объявления"><img src="${src}" alt="" loading="lazy"></a>`
-    ).join("");
+    const hasShots = (v.photos?.length ? v.photos : PHOTOS[mid] || []).length > 0;
 
     const isFav = favorites.has(mid);
 
@@ -527,9 +544,30 @@ function render(){
         <button type="button" class="rm" data-id="${mid}">Убрать</button>
       </div>
       </div>
-      ${shots?`<div class="shots">${shots}</div>`:""}
+      ${hasShots?`<div class="shots" data-shots="${mid}"></div>`:""}
     </li>`;
   }).join("");
+  // Синхронизация присылает те же данные несколько раз: не трогаем DOM, если ничего не поменялось.
+  if(html === lastListHtml) return;
+  lastListHtml = html;
+  list.innerHTML = html;
+  list.querySelectorAll(".shots[data-shots]").forEach(slot=> slot.replaceWith(shotsFor(slot.dataset.shots)));
+}
+
+/* Фото вшиты в страницу, по 150 КБ каждое. Блок с фото собираем один раз и при перерисовке
+   переставляем тот же узел: иначе iOS заново декодирует картинки и прокрутка дёргается (02.10.2026). */
+const shotsCache = new Map();
+let lastListHtml = "";
+function shotsFor(mid){
+  if(shotsCache.has(mid)) return shotsCache.get(mid);
+  const v = DATA.find(x=>midOf(x) === mid);
+  const box = document.createElement("div");
+  box.className = "shots";
+  box.innerHTML = (v.photos?.length ? v.photos : PHOTOS[mid] || []).map((src,k)=>
+    `<a href="${v.u}" data-view="${mid}" target="_blank" rel="noopener" aria-label="Фото ${k+1} из объявления"><img src="${src}" alt="" decoding="async"></a>`
+  ).join("");
+  shotsCache.set(mid, box);
+  return box;
 }
 
 function renderBin(){
