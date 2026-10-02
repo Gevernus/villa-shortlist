@@ -108,6 +108,10 @@
   .price .big.na{color:var(--muted);font-size:17px}
   .price .unit{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
   .price .second{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-2);margin-top:4px}
+  /* Цена за комнату и за виллу одного веса (02.10.2026) */
+  .price .pp{display:flex;flex-direction:column;gap:2px}
+  .price .pp + .pp{margin-top:8px}
+  .price .slash{display:none}
   .body{padding:14px 16px;min-width:0;display:flex;flex-direction:column;gap:7px}
   .row h3{font-size:16px;font-weight:600;letter-spacing:-.01em}
   .meta{font-size:13px;color:var(--muted);display:flex;flex-wrap:wrap;gap:5px 12px}
@@ -233,7 +237,10 @@
     .shots img{height:104px}
     .rank{border-right:0;border-bottom:1px solid var(--line);justify-content:flex-start;padding:8px 14px 0}
     .price{border-right:0;text-align:left;padding:10px 14px 0;flex-direction:row;align-items:baseline;gap:8px;flex-wrap:wrap}
-    .price .second{margin-top:0}
+    .price{flex-direction:row;align-items:flex-end;justify-content:flex-start;gap:12px;padding:12px 14px 0}
+    .price .pp + .pp{margin-top:0}
+    .price .slash{display:block;font-family:"IBM Plex Mono",monospace;font-size:23px;line-height:1;color:var(--line-strong);padding-bottom:16px}
+    .price .second{margin-top:0;flex-basis:100%}
     .side{border-left:0;border-top:1px solid var(--line);flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:10px 14px;width:100%}
     .side .date{margin-right:auto}
     .fav,.rm{padding:7px 11px}
@@ -502,10 +509,7 @@ function render(){
 
   const html = rows.map((v,i)=>{
     const main = share(v);
-    const mainLabel = "с комнаты / мес";
-    const second = v.p == null
-      ? `${v.b} ${v.b<5?"спальни":"спален"}`
-      : `${v.p} млн за виллу · ${v.b} ${v.b===1?"спальня":v.b<5?"спальни":"спален"}`;
+    const second = `${v.b} ${v.b===1?"спальня":v.b<5?"спальни":"спален"}`;
     const reach = v.p != null && v.p <= 35;
     const haggle = v.p != null && v.p > 40 && v.p <= 45;
     const tagHtml = [
@@ -525,8 +529,11 @@ function render(){
       <div class="row-main">
       <div class="rank mono">${i+1}</div>
       <div class="price">
-        <div class="big ${main==null?"na":""}">${main==null?"— —":fmt(main)}</div>
-        <div class="unit">${main==null?"цена не названа":mainLabel}</div>
+        ${main==null
+          ? `<div class="pp"><div class="big na">— —</div><div class="unit">цена не названа</div></div>`
+          : `<div class="pp"><div class="big">${fmt(main)}</div><div class="unit">млн за комнату</div></div>
+             <div class="slash" aria-hidden="true">/</div>
+             <div class="pp"><div class="big">${fmt(v.p)}</div><div class="unit">млн за виллу</div></div>`}
         <div class="second">${second}</div>
       </div>
       <div class="body">
