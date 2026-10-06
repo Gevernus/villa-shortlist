@@ -216,6 +216,11 @@
   }
   .bin .restore:hover{border-color:var(--accent)}
   .bin .restore:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .bin ul[hidden]{display:none}
+  .bin .bin-count{color:var(--muted);font-weight:500}
+  .bin .bin-toggle{appearance:none;font:inherit;font-size:13px;cursor:pointer;padding:8px 14px}
+  .bin .bin-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .bin .bin-toggle[aria-expanded="true"]{margin-bottom:12px}
 
   footer{margin-top:38px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;display:flex;flex-direction:column;gap:8px}
   footer b{color:var(--ink-2);font-weight:600}
@@ -299,11 +304,11 @@
   .seg button[aria-pressed="true"]{background:#f5f8ff;color:#000309;font-weight:700}
 
   /* вторичные кнопки: стеклянные, без обводки, как Secondary */
-  .fav,.rm,.mark-all,.bin .restore{
+  .fav,.rm,.mark-all,.bin .restore,.bin .bin-toggle{
     border:0;border-radius:12px;background:rgb(245 248 255 / .04);color:var(--ink);font-weight:600;
     transition:background-color 150ms ease;
   }
-  .fav:hover,.rm:hover,.mark-all:hover,.bin .restore:hover{background:rgb(245 248 255 / .1);color:var(--ink)}
+  .fav:hover,.rm:hover,.mark-all:hover,.bin .restore:hover,.bin .bin-toggle:hover{background:rgb(245 248 255 / .1);color:var(--ink)}
   .fav[aria-pressed="true"]{background:rgb(0 77 255 / .18);color:var(--ink)}
 
   /* «Посмотреть» главной кнопкой: белая заливка */
@@ -370,9 +375,11 @@
 <ol class="list" id="list"></ol>
 
 <section class="bin" id="bin">
-  <h2>Отклонённые</h2>
-  <p>Убранные варианты. Хранятся в этом браузере, кнопка «Вернуть» возвращает карточку в подборку.</p>
-  <ul id="binList"></ul>
+  <h2>Отклонённые <span class="bin-count" id="binCount"></span></h2>
+  <p>Убранные варианты. Кнопка «Вернуть» возвращает карточку в подборку.</p>
+  <!-- 06.10.2026: список свёрнут по умолчанию, раскрывается кнопкой -->
+  <button type="button" class="bin-toggle" id="binToggle" aria-expanded="false" aria-controls="binList">Показать полностью</button>
+  <ul id="binList" hidden></ul>
 </section>
 
 </div>
@@ -10184,6 +10191,7 @@ function renderBin(){
   const ul = document.getElementById("binList");
   if(!rejected.size){ box.hidden = true; ul.innerHTML = ""; return; }
   box.hidden = false;
+  document.getElementById("binCount").textContent = rejected.size;
   const items = [...rejected.entries()].sort((a,b)=> (b[1].at||"").localeCompare(a[1].at||""));
   ul.innerHTML = items.map(([id,v])=>{
     const when = v.at ? new Date(v.at).toLocaleString("ru-RU", {day:"2-digit", month:"2-digit", hour:"2-digit", minute:"2-digit"}) : "";
@@ -10194,6 +10202,14 @@ function renderBin(){
     </li>`;
   }).join("");
 }
+
+document.getElementById("binToggle").addEventListener("click", e => {
+  const btn = e.currentTarget, ul = document.getElementById("binList");
+  const open = btn.getAttribute("aria-expanded") !== "true";
+  btn.setAttribute("aria-expanded", String(open));
+  ul.hidden = !open;
+  btn.textContent = open ? "Свернуть" : "Показать полностью";
+});
 
 async function reject(id){
   const v = DATA.find(x=>midOf(x) === id);
