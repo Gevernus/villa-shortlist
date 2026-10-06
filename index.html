@@ -9706,6 +9706,9 @@ const rejected = new Map();
 const favorites = new Map();
 // Просмотренные: карточка считается открытой после клика по объявлению или фото.
 const viewed = new Map();
+/* Открытые в этом заходе карточки остаются на экране в фильтре «не просмотрено», чтобы успеть нажать «Убрать».
+   Уходят при смене фильтра или перезагрузке (06.10.2026). */
+const keepOnScreen = new Set();
 let viewedStore = null;
 // Свитч на карточке: хранится положение по номеру объявления.
 const switches = new Map();
@@ -9758,7 +9761,7 @@ function render(){
     if(state.beds !== "all" && (v.p == null || v.p > Number(state.beds))) return false;
     if(state.fresh === "sep" && !/\.10$/.test(v.d || "")) return false;
     if(state.fresh === "fav" && !favorites.has(midOf(v))) return false;
-    if(state.fresh === "new" && viewed.has(midOf(v))) return false;
+    if(state.fresh === "new" && viewed.has(midOf(v)) && !keepOnScreen.has(midOf(v))) return false;
     return true;
   }).sort((a,b)=> keyOf(a) - keyOf(b));
 
@@ -9948,6 +9951,7 @@ async function toggleSwitch(id){
 }
 
 document.getElementById("markAll").addEventListener("click", ()=>{
+  keepOnScreen.clear();
   markViewed(DATA.filter(v => !rejected.has(midOf(v))).map(midOf));
 });
 
@@ -9956,7 +9960,7 @@ document.getElementById("list").addEventListener("click", e=>{
   if(swBtn){ toggleSwitch(swBtn.dataset.id); return; }
   const link = e.target.closest("a[data-view]");
   // ссылка открывается как обычно, перерисовку откладываем, чтобы не сбить переход
-  if(link){ const id = link.dataset.view; setTimeout(()=> markViewed([id]), 0); return; }
+  if(link){ const id = link.dataset.view; keepOnScreen.add(id); setTimeout(()=> markViewed([id]), 0); return; }
   const fav = e.target.closest(".fav");
   if(fav){ toggleFav(fav.dataset.id); return; }
   const btn = e.target.closest(".rm");
@@ -9975,6 +9979,7 @@ document.querySelectorAll(".seg").forEach(seg=>{
     if(!btn) return;
     seg.querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed", String(b===btn)));
     state[seg.id] = btn.dataset.v;
+    keepOnScreen.clear();
     render();
   });
 });
