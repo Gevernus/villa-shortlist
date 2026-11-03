@@ -369,7 +369,7 @@
   <div class="count" id="count">0 вариантов</div>
 </div>
 
-<p class="model-note">По 15 млн на комнату со всеми платежами. Трёшки смотрим до 40 млн, чтобы осталось на электричество, от 40 до 45 помечены «торг». Двушки до 30 млн. Переключатель «Спальни» показывает только нужный вариант.</p>
+<p class="model-note">Бюджет 16 + 11 + 16 = 43 млн на всех. Трёшки смотрим от 25 до 43 млн, торгуемся по месту.</p>
 <div class="sync on" id="sync"><span class="dot"></span><span id="syncText"></span></div>
 
 <ol class="list" id="list"></ol>
@@ -5376,7 +5376,7 @@ function render(){
     if(state.rooms === "2" && v.b !== 2) return false;
     if(state.rooms === "3" && !(v.b >= 3)) return false;
     if(state.beds !== "all" && (v.p == null || v.p > Number(state.beds))) return false;
-    if(state.fresh === "sep" && !/\.10$/.test(v.d || "")) return false;
+    if(state.fresh === "sep" && !/\.11$/.test(v.d || "")) return false;
     if(state.fresh === "fav" && !favorites.has(midOf(v))) return false;
     if(state.fresh === "new" && viewed.has(midOf(v)) && !keepOnScreen.has(midOf(v))) return false;
     return true;
@@ -5403,7 +5403,7 @@ function render(){
     const main = share(v);
     const second = `${v.b} ${v.b===1?"спальня":v.b<5?"спальни":"спален"}`;
     const reach = v.p != null && v.p <= (v.b === 2 ? 25 : 35);
-    const haggle = v.p != null && v.p > 40 && v.p <= 45;
+    const haggle = false; // с 03.11.2026 торг не помечаем, весь потолок 43 млн
     const tagHtml = [
       v.flagText ? `<span class="tag alarm">${v.flagText}</span>` : "",
       viewed.has(midOf(v)) ? "" : '<span class="tag unseen">не просмотрено</span>',
