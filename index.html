@@ -338,7 +338,7 @@
 
 <div class="wrap">
 <header>
-  <div class="eyebrow">Поиск на конец ноября · <span id="totalCount">0</span> в подборке</div>
+  <div class="eyebrow">Поиск на конец ноября · <span id="totalCount">3</span> в подборке</div>
   <h1>Мониторинг вилл: Чангу</h1>
   <p class="lede">Виллы целиком в Чангу, от 5 до 15 минут до океана. Южнее дороги Мунгу, Чангу, Керобокан: за ней пробки и далеко до пляжа. Трёшки от 25 до 43 млн: мы с Артёмом, Оля и сосед.</p>
   <dl class="facts">
@@ -385,9 +385,70 @@
 </div>
 
 <script>
-const PHOTOS = {};
+const PHOTOS = {"1092495093623656":["photos/3666cccb6a38d715.jpg","photos/7cbe257930e44f35.jpg","photos/dffd4c4c1822875f.jpg"],"1606853317234445":["photos/5faf9820c05301ad.jpg","photos/1ceeaefe004f52d9.jpg","photos/8f3f0122a066a615.jpg"],"1262852664804699":["photos/c045de9dbec7a608.jpg","photos/ea60288d5505cf8b.jpg","photos/5d305c74c87322dc.jpg"]};
 
-const DATA = [];
+const DATA = [
+  {
+    "n": "3BR, Canggu",
+    "a": "Canggu",
+    "b": 3,
+    "p": 27,
+    "d": "04.11",
+    "fresh": true,
+    "f": "House\n3 beds · 3 baths\nProperty for rent location\nBadung, 80365\nDescription\nYOUR PRIVATE BALI VILLA – 3 BEDROOMS, POOL & MONTHLY SERVICES INCLUDED\nLooking for a luxury 3-bedroom villa in Canggu – ready to move in monthly or yearly?\nWhether you're a fighter, digital nomad, or small family, this villa",
+    "extra": "Facebook Marketplace, продавец Ericha",
+    "tags": [
+      "facebook",
+      "новое"
+    ],
+    "t": "",
+    "note": "Автоматическая находка. Проверить доступность, условия и точный адрес.",
+    "lvl": "warn",
+    "u": "https://www.facebook.com/marketplace/item/1092495093623656",
+    "monitoredAt": "2026-11-04T12:38:30.424Z",
+    "id": "1092495093623656"
+  },
+  {
+    "n": "3BR, Berawa",
+    "a": "Berawa",
+    "b": 3,
+    "p": 36,
+    "d": "04.11",
+    "fresh": true,
+    "f": "Villa\n3 beds · 4 baths\nProperty for rent location\nBadung, 80365\nDescription\nAvailable now 🔥\nhuge and homey 3 bedroom private villa in Berawa Canggu,\nall inclusive services and electricity in quiet area 🤫\nPm for video / visit the villa,\nPet allowed 🐶\n•36 million / month\nInclude : \nElectricity \nWif",
+    "extra": "Facebook Marketplace, продавец Carla Akairyu",
+    "tags": [
+      "facebook",
+      "новое"
+    ],
+    "t": "",
+    "note": "Автоматическая находка. Проверить доступность, условия и точный адрес.",
+    "lvl": "warn",
+    "u": "https://www.facebook.com/marketplace/item/1606853317234445",
+    "monitoredAt": "2026-11-04T12:38:30.427Z",
+    "id": "1606853317234445"
+  },
+  {
+    "n": "3BR, Berawa",
+    "a": "Berawa",
+    "b": 3,
+    "p": 37,
+    "d": "04.11",
+    "fresh": true,
+    "f": "Villa\n3 beds · 3 baths\nProperty for rent location\nBadung, 80365\nDescription\n3 bedrooms private villa in Berawa - Canggu\nAll included everything ❗️\nAvailable now 🔥\nLand size 3 ara ,\nPm for video / visit the villa ,\n•37 million / month \nInclude : \nElectricity \nWifi\nCleaning \nChange linen n towel\nPool",
+    "extra": "Facebook Marketplace, продавец Julie R Priyono",
+    "tags": [
+      "facebook",
+      "новое"
+    ],
+    "t": "",
+    "note": "Автоматическая находка. Проверить доступность, условия и точный адрес.",
+    "lvl": "warn",
+    "u": "https://www.facebook.com/marketplace/item/1262852664804699",
+    "monitoredAt": "2026-11-04T12:38:30.429Z",
+    "id": "1262852664804699"
+  }
+];
 
 const state = {rooms:"all", beds:"all", fresh:"all"};
 const midOf = v => v.id || (v.u.match(/\/(\d+)$/) || [])[1];
